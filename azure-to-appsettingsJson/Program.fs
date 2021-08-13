@@ -1,3 +1,6 @@
+//First argument = path to azure json, gotta be a file
+//Second argument = output file
+
 open Newtonsoft.Json
 
 type Node =
