@@ -12,7 +12,5 @@ let main argv =
     // write to file
     let writeToFile loc data = System.IO.File.WriteAllText(loc, data)
 
-
-
     writeToFile argv.[1] (AzureToNode.toJson (AzureToNode.processData (Map.toList json)))
     0 // return an integer exit code
