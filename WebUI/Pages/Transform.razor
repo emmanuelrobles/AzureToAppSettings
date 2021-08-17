@@ -1,0 +1,61 @@
+@page "/transform"
+@using Azure_to_AppSettings
+@using Microsoft.FSharp.Collections
+@using Newtonsoft.Json
+@using WebUI.Models
+@inject JsonState _state
+
+<h1>Transform from azure settings to appSettings</h1>
+
+<div class="json-container">
+    <div>
+        <span>From Json</span>
+        <textarea class="form-control" rows="5" @bind="_state.Json" @bind:event="oninput"></textarea>
+    </div>
+
+    @if (_state.Error is {HasError: true })
+    {
+        <span class="text-danger">
+            @_state.Error.ErrorMsg
+        </span>
+    }
+    
+    <div>
+        <button type="button" class="btn btn-primary" @onclick="OnConvertClicked">Transform</button>
+    </div>
+
+    <div>
+        <span>To appSettings.json</span>
+        <textarea class="form-control" rows="5">@_state.AppSettingsJson</textarea>
+    </div>
+</div>
+
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _state.OnChange += StateHasChanged;
+    }
+
+    private void OnConvertClicked()
+    {
+        try
+        {
+            _state.Error = null;
+            var map = JsonConvert.DeserializeObject<FSharpMap<string, string>>(_state.Json);
+            _state.AppSettingsJson = AzureToNode.toJson(AzureToNode.processData(MapModule.ToList(map)));
+        }
+        catch (Exception e)
+        {
+            _state.Error = new Error()
+            {
+                ErrorMsg = e.Message,
+                HasError = true
+            };
+        }
+        
+    }
+
+}
