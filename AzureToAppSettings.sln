@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "azure-to-appsettingsJson", "azure-to-appsettingsJson\azure-to-appsettingsJson.fsproj", "{7FD164B4-F440-4B55-A02A-2382D4D944B2}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Azure-to-Node", "Azure-to-Node\Azure-to-Node.fsproj", "{D497EDDF-607D-4107-971D-FA22B0D9B078}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{7FD164B4-F440-4B55-A02A-2382D4D944B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FD164B4-F440-4B55-A02A-2382D4D944B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FD164B4-F440-4B55-A02A-2382D4D944B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D497EDDF-607D-4107-971D-FA22B0D9B078}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D497EDDF-607D-4107-971D-FA22B0D9B078}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D497EDDF-607D-4107-971D-FA22B0D9B078}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D497EDDF-607D-4107-971D-FA22B0D9B078}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
