@@ -31,7 +31,7 @@ jobs:
       run: sed -i 's/<base href="\/" \/>/<base href="\/AzureToAppSettings\/" \/>/g' release/wwwroot/index.html
       
     - name: Change serviceworker in index.html from / to WebUI
-      run: sed -i 's/service-worker.js/ <base href="\/AzureToAppSettings\/.service-worker.js/" \/>/g' release/wwwroot/index.html
+      run: sed -i 's/service-worker.js / \/AzureToAppSettings\/.service-worker.js /g' release/wwwroot/index.html
       
       # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
     - name: Add .nojekyll file
