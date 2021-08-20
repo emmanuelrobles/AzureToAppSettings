@@ -1,8 +1,8 @@
 {
   "name": "AzureSettingsToAppSettings",
   "short_name": "AzureToApp",
-  "start_url": "https://emmanuelrobles.github.io/AzureToAppSettings/",
-  "scope": "https://emmanuelrobles.github.io/AzureToAppSettings/",
+  "start_url": "/AzureToAppSettings/",
+  "scope": "/AzureToAppSettings/",
   "icons": [
     {
       "src": "icons/icon-512.png",
