@@ -1,7 +1,7 @@
 {
   "name": "AzureSettingsToAppSettings",
   "short_name": "AzureToApp",
-  "start_url": "/index.html",
+  "start_url": "/",
   "icons": [
     {
       "src": "icons/icon-512.png",
