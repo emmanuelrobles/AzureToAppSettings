@@ -29,9 +29,9 @@ jobs:
     
     - name: Change base paths in index.html from / to WebUI
       run: | 
-      sed -i -e 's/<base href="\/"\/>/<base href="\/AzureToAppSettings\/" \/>/g' -e 's/service-worker.js/\/AzureToAppSettings\/service-worker.js/g' release/wwwroot/index.html
-      sed -i 's/"\/"/"\/AzureToAppSettings\/"/g' release/wwwroot/manifest.json
-      
+        sed -i -e 's/<base href="\/"\/>/<base href="\/AzureToAppSettings\/" \/>/g' -e 's/service-worker.js/\/AzureToAppSettings\/service-worker.js/g' release/wwwroot/index.html
+        sed -i 's/"\/"/"\/AzureToAppSettings\/"/g' release/wwwroot/manifest.json
+
       # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
     - name: Add .nojekyll file
       run: touch release/wwwroot/.nojekyll
