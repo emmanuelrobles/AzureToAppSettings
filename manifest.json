@@ -1,0 +1,21 @@
+{
+  "name": "AzureSettingsToAppSettings",
+  "short_name": "AzureToApp",
+  "start_url": "/?home=true",
+  "icons": [
+    {
+      "src": "icons/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "icons/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "theme_color": "#000000",
+  "background_color": "#FFFFFF",
+  "display": "fullscreen",
+  "orientation":"portrait"
+}
