@@ -41,10 +41,19 @@
 
     private void OnConvertClicked()
     {
+        FSharpMap<string, string> DeserializesFromAppSettings(string data) => JsonConvert.DeserializeObject<FSharpMap<string, string>>(data);
+        FSharpMap<string, string> DeserializesFromConfiguration(string data)
+        {
+            var config = JsonConvert.DeserializeObject<IEnumerable<ConfigDto>>(data);
+            return new FSharpMap<string, string>(config.Select(e => new Tuple<string,string>(e.Name,e.Value)));
+        }
+        
         try
         {
             _state.Error = null;
-            var map = JsonConvert.DeserializeObject<FSharpMap<string, string>>(_state.Json);
+            var map = _state.Json.StartsWith("[") 
+                ? DeserializesFromConfiguration(_state.Json)
+                : DeserializesFromAppSettings(_state.Json);
             _state.AppSettingsJson = AzureToNode.toJson(AzureToNode.processData(MapModule.ToList(map)));
         }
         catch (Exception e)
