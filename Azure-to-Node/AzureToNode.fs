@@ -40,3 +40,18 @@ module AzureToNode =
                 acc + $"{{{temp}}}"
 
         toJson' node ""
+
+
+    let toVueSettings (node: Node) =
+        let rec toVueSettings' (node: Node) acc =
+            match node with
+            | Val s -> $"{s}"
+            | Children node ->
+                let temp =
+                    node
+                    |> Map.toSeq
+                    |> Seq.map (fun (k, v) -> $"{k}:{(toVueSettings' v acc)}")
+                    |> String.concat "\n"
+
+                acc + $"{temp}"
+        toVueSettings' node ""
