@@ -181,7 +181,7 @@
       "url": "_framework\/Azure-to-Node.dll"
     },
     {
-      "hash": "sha256-IzbSQ7M5P0lI9pDdRrj2NjVS1ENM4WnYmUqh5LZUJHs=",
+      "hash": "sha256-tAKKxCBGzkGwHXIdUzTZNGlP7A0dD2y1Z+q41u3kQCM=",
       "url": "_framework\/WebUI.dll"
     },
     {
@@ -389,7 +389,7 @@
       "url": "_framework\/zh-Hant\/FSharp.Core.resources.dll"
     },
     {
-      "hash": "sha256-P668xjv0PyVkc41xfJlnHmTIxMygPZ26FhtvjD0C+pY=",
+      "hash": "sha256-ObFKg4m1R3nF0KJ0yQBW8x2pQyBFi4CFqnP5M27cYeM=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -397,5 +397,5 @@
       "url": "_framework\/blazor.webassembly.js"
     }
   ],
-  "version": "JAyzAzbd"
+  "version": "GzvwRaYa"
 };
