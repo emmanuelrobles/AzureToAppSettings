@@ -2,7 +2,7 @@ using System;
 
 namespace WebUI.Models
 {
-    public class JsonState
+    public class SettingsState
     {
         private string _json;
         public string Json
@@ -11,6 +11,18 @@ namespace WebUI.Models
             set
             {
                 _json = value;
+                NotifyStateChanged();
+            }
+        }
+
+        private TransformToEnum _output;
+
+        public TransformToEnum Output
+        {
+            get => _output;
+            set
+            {
+                _output = value;
                 NotifyStateChanged();
             }
         }

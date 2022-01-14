@@ -3,11 +3,22 @@
 @using Microsoft.FSharp.Collections
 @using Newtonsoft.Json
 @using WebUI.Models
-@inject JsonState _state
+@inject SettingsState _state
 
 <h1>Transform from azure settings to appSettings</h1>
 
 <div class="json-container">
+    <div style="padding: 10px 0 10px 0">
+        <span>Output format</span>
+        <select class="form-control" style="width: auto" @bind="_state.Output">
+
+            @foreach (var data in Enum.GetValues(typeof(TransformToEnum)))
+            {
+                <option value="@data"> @data.ToString() </option>
+            }
+
+        </select>
+    </div>
     <div>
         <span>Azure settings</span>
         <textarea class="form-control" rows="5" @bind="_state.Json" @bind:event="oninput"></textarea>
@@ -19,7 +30,7 @@
             @_state.Error.ErrorMsg
         </span>
     }
-    
+
     <div>
         <button type="button" class="btn btn-primary" @onclick="OnConvertClicked">Transform</button>
     </div>
@@ -32,7 +43,7 @@
 
 
 @code {
-
+    
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -54,7 +65,7 @@
             var map = _state.Json.StartsWith("[") 
                 ? DeserializesFromConfiguration(_state.Json)
                 : DeserializesFromAppSettings(_state.Json);
-            _state.AppSettingsJson = AzureToNode.toJson(AzureToNode.processData(MapModule.ToList(map)));
+            _state.AppSettingsJson = GetOutputFunc(_state.Output)(AzureToNode.processData(MapModule.ToList(map)));
         }
         catch (Exception e)
         {
@@ -67,4 +78,11 @@
         
     }
 
+    private Func<Node, string> GetOutputFunc(TransformToEnum outputs)
+    {
+        return outputs switch{
+            TransformToEnum.AppSettingsJson => AzureToNode.toJson,
+            TransformToEnum.VueSettings => AzureToNode.toVueSettings,
+            _ => throw new ArgumentOutOfRangeException(nameof(outputs), outputs, "Output not supported")};
+    }
 }
