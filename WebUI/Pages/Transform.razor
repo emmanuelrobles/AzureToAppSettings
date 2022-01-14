@@ -5,7 +5,7 @@
 @using WebUI.Models
 @inject SettingsState _state
 
-<h1>Transform from azure settings to appSettings</h1>
+<h1>Transform from azure settings to @_state.Output</h1>
 
 <div class="json-container">
     <div style="padding: 10px 0 10px 0">
@@ -36,7 +36,7 @@
     </div>
 
     <div>
-        <span>AppSettings.json</span>
+        <span>@_state.Output</span>
         <textarea class="form-control" rows="5">@_state.AppSettingsJson</textarea>
     </div>
 </div>
