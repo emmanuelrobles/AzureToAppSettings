@@ -27,7 +27,7 @@ module AzureToNode =
         processList data (Children(Map.empty))
 
     // Node to string
-    let nodeToString (keyWrapper:string * string) (valueWrapper:string * string) (nodeWrapper:string * string) (concatString: string) (node: Node)  =
+    let nodeToString (keyWrapper:string * string) (valueWrapper:string * string) (nodeWrapper:string * string) (nodeConcatString: string) (keyValueConcat: string) (node: Node)  =
         let rec nodeToString' (node: Node) acc =
             match node with
             | Val s -> $"{fst valueWrapper}{s}{snd valueWrapper}"
@@ -35,16 +35,16 @@ module AzureToNode =
                 let temp =
                     node
                     |> Map.toSeq
-                    |> Seq.map (fun (k, v) -> $"{fst keyWrapper}{k}{snd keyWrapper}:{(nodeToString' v acc)}")
-                    |> String.concat concatString
+                    |> Seq.map (fun (k, v) -> $"{fst keyWrapper}{k}{snd keyWrapper}{keyValueConcat}{(nodeToString' v acc)}")
+                    |> String.concat nodeConcatString
 
                 acc + $"{fst nodeWrapper}{temp}{snd nodeWrapper}"
         nodeToString' node ""
     
     // node to json
     let toJson =
-        nodeToString ("\"","\"") ("\"","\"") ("{","}") ","
+        nodeToString ("\"","\"") ("\"","\"") ("{","}") "," ":"
 
     // node to vue settings
     let toVueSettings =
-        nodeToString ("","") ("","") ("","") "\n"
+        nodeToString ("","") ("","") ("","") "\n" ":"

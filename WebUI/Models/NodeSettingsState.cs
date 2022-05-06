@@ -11,7 +11,8 @@ namespace WebUI.Models
         private string _valueWrapperEnd;
         private string _nodeWrapperStart;
         private string _nodeWrapperEnd;
-        private string _concatString;
+        private string _nodeNodeConcatString;
+        private string _keyValueConcatString;
 
         public string SeparatorFlag
         {
@@ -83,12 +84,22 @@ namespace WebUI.Models
             }
         }
         
-        public string ConcatString
+        public string NodeConcatString
         {
-            get => _concatString;
+            get => _nodeNodeConcatString;
             set
             {
-                _concatString = value;
+                _nodeNodeConcatString = value;
+                NotifyStateChanged();
+            }
+        }
+        
+        public string KeyValueConcatString
+        {
+            get => _keyValueConcatString;
+            set
+            {
+                _keyValueConcatString = value;
                 NotifyStateChanged();
             }
         }
