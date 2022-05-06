@@ -4,31 +4,43 @@
 @using Microsoft.FSharp.Core
 @using Newtonsoft.Json
 @using WebUI.Models
-@inject SettingsState _state
+@inject SettingsState SettingsState
+@inject NodeSettingsState NodeSettingsState
 
-<h1>Transform from azure settings to @_state.Output</h1>
+<h1>Transform from azure settings to @SettingsState.Output</h1>
 
 <div class="json-container">
-    <div style="padding: 10px 0 10px 0">
-        <span>Output format</span>
-        <select class="form-control" style="width: auto" @bind="_state.Output">
+    <div style="padding: 10px 0 10px 0; display: flex; flex-direction: row">
+        <div style="padding-right: 25px">
+            <div class="form-group">
+                <label for="outputFormat">Output format</label>
+                <select id="outputFormat" class="form-control" style="width: auto" @bind="SettingsState.Output">
 
-            @foreach (var data in Enum.GetValues(typeof(TransformToEnum)))
-            {
-                <option value="@data"> @data.ToString() </option>
-            }
+                    @foreach (var data in Enum.GetValues(typeof(TransformToEnum)))
+                    {
+                        <option value="@data"> @data.ToString() </option>
+                    }
 
-        </select>
+                </select>
+            </div>
+        </div>
+
+        <div>
+            <div class="form-group">
+                <label for="separatorFlag">Separator flag</label>
+                <input type="text" class="form-control" id="separatorFlag" placeholder="Enter flag" @bind="NodeSettingsState.SeparatorFlag">
+            </div>
+        </div>
     </div>
     <div>
         <span>Azure settings</span>
-        <textarea class="form-control" rows="5" @bind="_state.Json" @bind:event="oninput"></textarea>
+        <textarea class="form-control" rows="5" @bind="SettingsState.Json" @bind:event="oninput"></textarea>
     </div>
 
-    @if (_state.Error is {HasError: true })
+    @if (SettingsState.Error is {HasError: true })
     {
         <span class="text-danger">
-            @_state.Error.ErrorMsg
+            @SettingsState.Error.ErrorMsg
         </span>
     }
 
@@ -37,46 +49,53 @@
     </div>
 
     <div>
-        <span>@_state.Output</span>
-        <textarea class="form-control" rows="5">@_state.AppSettingsJson</textarea>
+        <span>@SettingsState.Output</span>
+        <textarea class="form-control" rows="5" @bind="SettingsState.AppSettingsJson"></textarea>
     </div>
 </div>
 
 
 @code {
-    
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        _state.OnChange += StateHasChanged;
+        SettingsState.OnChange += StateHasChanged;
     }
 
     private void OnConvertClicked()
     {
         FSharpMap<string, string> DeserializesFromAppSettings(string data) => JsonConvert.DeserializeObject<FSharpMap<string, string>>(data);
+
         FSharpMap<string, string> DeserializesFromConfiguration(string data)
         {
             var config = JsonConvert.DeserializeObject<IEnumerable<ConfigDto>>(data);
-            return new FSharpMap<string, string>(config.Select(e => new Tuple<string,string>(e.Name,e.Value)));
+            return new FSharpMap<string, string>(config.Select(e => new Tuple<string, string>(e.Name, e.Value)));
         }
-        
+
         try
         {
-            _state.Error = null;
-            var map = _state.Json.StartsWith("[") 
-                ? DeserializesFromConfiguration(_state.Json)
-                : DeserializesFromAppSettings(_state.Json);
-            _state.AppSettingsJson = GetOutputFunc(_state.Output).Invoke(AzureToNode.processData("__",MapModule.ToList(map)));
+            SettingsState.Error = null;
+            var map = SettingsState.Json.StartsWith("[")
+                ? DeserializesFromConfiguration(SettingsState.Json)
+                : DeserializesFromAppSettings(SettingsState.Json);
+            SettingsState.AppSettingsJson = GetOutputFunc(SettingsState.Output)
+                .Invoke(
+                    AzureToNode
+                        .processData
+                        (NodeSettingsState.SeparatorFlag, MapModule.ToList(map))
+                    );
+            Console.WriteLine(NodeSettingsState.SeparatorFlag);
+            Console.WriteLine(SettingsState.AppSettingsJson);
         }
         catch (Exception e)
         {
-            _state.Error = new Error()
+            SettingsState.Error = new Error()
             {
                 ErrorMsg = e.Message,
                 HasError = true
             };
         }
-        
     }
 
     private FSharpFunc<Node, string> GetOutputFunc(TransformToEnum outputs)
@@ -86,4 +105,5 @@
             TransformToEnum.VueSettings => AzureToNode.toVueSettings,
             _ => throw new ArgumentOutOfRangeException(nameof(outputs), outputs, "Output not supported")};
     }
+
 }
