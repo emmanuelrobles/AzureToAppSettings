@@ -6,7 +6,7 @@ type Node =
 
 module AzureToNode =
 
-    let processData (data: (string * string) list) =
+    let processData (splitString: string) (data: (string * string) list) =
         let rec processList (data: (string * string) list) (acc: Node) =
             let rec process' (keys: string list) value (node: Node) : Node =
                 match (keys, node) with
@@ -22,36 +22,29 @@ module AzureToNode =
             | [] -> acc
             | (k, v) :: t ->
                 let temp =
-                    (process' (Array.toList (k.Split("__"))) v acc) in processList t temp
+                    (process' (Array.toList (k.Split(splitString))) v acc) in processList t temp
 
         processList data (Children(Map.empty))
 
-    let toJson (node: Node) =
-        let rec toJson' (node: Node) acc =
+    // Node to string
+    let nodeToString (keyWrapper:string * string) (valueWrapper:string * string) (nodeWrapper:string * string) (concatString: string) (node: Node)  =
+        let rec nodeToString' (node: Node) acc =
             match node with
-            | Val s -> $"\"{s}\""
+            | Val s -> $"{fst valueWrapper}{s}{snd valueWrapper}"
             | Children node ->
                 let temp =
                     node
                     |> Map.toSeq
-                    |> Seq.map (fun (k, v) -> $"\"{k}\":  {(toJson' v acc)}")
-                    |> String.concat ","
+                    |> Seq.map (fun (k, v) -> $"{fst keyWrapper}{k}{snd keyWrapper}:{(nodeToString' v acc)}")
+                    |> String.concat concatString
 
-                acc + $"{{{temp}}}"
+                acc + $"{fst nodeWrapper}{temp}{snd nodeWrapper}"
+        nodeToString' node ""
+    
+    // node to json
+    let toJson =
+        nodeToString ("\"","\"") ("\"","\"") ("{","}") ","
 
-        toJson' node ""
-
-
-    let toVueSettings (node: Node) =
-        let rec toVueSettings' (node: Node) acc =
-            match node with
-            | Val s -> $"{s}"
-            | Children node ->
-                let temp =
-                    node
-                    |> Map.toSeq
-                    |> Seq.map (fun (k, v) -> $"{k}:{(toVueSettings' v acc)}")
-                    |> String.concat "\n"
-
-                acc + $"{temp}"
-        toVueSettings' node ""
+    // node to vue settings
+    let toVueSettings =
+        nodeToString ("","") ("","") ("","") "\n"

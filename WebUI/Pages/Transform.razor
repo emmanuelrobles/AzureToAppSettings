@@ -1,6 +1,7 @@
 @page "/transform"
 @using Azure_to_AppSettings
 @using Microsoft.FSharp.Collections
+@using Microsoft.FSharp.Core
 @using Newtonsoft.Json
 @using WebUI.Models
 @inject SettingsState _state
@@ -65,7 +66,7 @@
             var map = _state.Json.StartsWith("[") 
                 ? DeserializesFromConfiguration(_state.Json)
                 : DeserializesFromAppSettings(_state.Json);
-            _state.AppSettingsJson = GetOutputFunc(_state.Output)(AzureToNode.processData(MapModule.ToList(map)));
+            _state.AppSettingsJson = GetOutputFunc(_state.Output).Invoke(AzureToNode.processData("__",MapModule.ToList(map)));
         }
         catch (Exception e)
         {
@@ -78,7 +79,7 @@
         
     }
 
-    private Func<Node, string> GetOutputFunc(TransformToEnum outputs)
+    private FSharpFunc<Node, string> GetOutputFunc(TransformToEnum outputs)
     {
         return outputs switch{
             TransformToEnum.AppSettingsJson => AzureToNode.toJson,
