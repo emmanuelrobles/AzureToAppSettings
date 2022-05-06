@@ -32,6 +32,84 @@
             </div>
         </div>
     </div>
+    
+    @if (SettingsState.Output is TransformToEnum.Advanced)
+    {
+        <div class="advanced-container">
+            <div class="advanced-headers">
+                <spa>AdvancedSettings</spa>
+            </div>
+            
+            <div class="advanced-legend">
+                <div>
+                    <button type="button" class="btn btn-primary" style="margin: 0" @onclick="() => showLegend = !showLegend">@(showLegend ? "Hide" : "Show") legend</button>
+                </div>
+                
+                @if (showLegend)
+                {
+                    <img width="360px" src='https://svgshare.com/i/gua.svg' title='Instructions' />
+                }
+
+            </div>
+            
+            <div class="advanced-option-container">
+                <div class="advanced-option">
+                    <div>
+                        <div class="form-group">
+                            <label for="KeyWrapperStart">Key wrapper start</label>
+                            <input type="text" class="form-control" id="KeyWrapperStart" placeholder="Enter start key" @bind="NodeSettingsState.KeyWrapperStart">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label for="KeyWrapperEnd">Key wrapper end</label>
+                            <input type="text" class="form-control" id="KeyWrapperEnd" placeholder="Enter end key" @bind="NodeSettingsState.KeyWrapperEnd">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="advanced-option">
+                    <div>
+                        <div class="form-group">
+                            <label for="ValueWrapperStart">Value wrapper end</label>
+                            <input type="text" class="form-control" id="ValueWrapperStart" placeholder="Enter start value" @bind="NodeSettingsState.ValueWrapperStart">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label for="ValueWrapperEnd">Value wrapper start</label>
+                            <input type="text" class="form-control" id="ValueWrapperEnd" placeholder="Enter end value" @bind="NodeSettingsState.ValueWrapperEnd">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="advanced-option">
+                    <div>
+                        <div class="form-group">
+                            <label for="NodeWrapperStart">Node wrapper start</label>
+                            <input type="text" class="form-control" id="NodeWrapperStart" placeholder="Enter start node" @bind="NodeSettingsState.NodeWrapperStart">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label for="NodeWrapperEnd">Node wrapper end</label>
+                            <input type="text" class="form-control" id="NodeWrapperEnd" placeholder="Enter end node" @bind="NodeSettingsState.NodeWrapperEnd">
+                        </div>
+                    </div>
+                </div>
+                <div class="advanced-option">
+                    <div>
+                        <div class="form-group">
+                            <label for="ConcatString">Concat</label>
+                            <input type="text" class="form-control" id="ConcatString" placeholder="Enter concat" @bind="NodeSettingsState.ConcatString">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+
     <div>
         <span>Azure settings</span>
         <textarea class="form-control" rows="5" @bind="SettingsState.Json" @bind:event="oninput"></textarea>
@@ -57,6 +135,8 @@
 
 @code {
 
+    private bool showLegend = false;
+    
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -84,7 +164,7 @@
                     AzureToNode
                         .processData
                         (NodeSettingsState.SeparatorFlag, MapModule.ToList(map))
-                    );
+                );
             Console.WriteLine(NodeSettingsState.SeparatorFlag);
             Console.WriteLine(SettingsState.AppSettingsJson);
         }
@@ -98,11 +178,21 @@
         }
     }
 
-    private FSharpFunc<Node, string> GetOutputFunc(TransformToEnum outputs)
+    private Func<Node, string> GetOutputFunc(TransformToEnum outputs)
     {
         return outputs switch{
-            TransformToEnum.AppSettingsJson => AzureToNode.toJson,
-            TransformToEnum.VueSettings => AzureToNode.toVueSettings,
+            TransformToEnum.AppSettingsJson => AzureToNode.toJson.Invoke,
+            TransformToEnum.VueSettings => AzureToNode.toVueSettings.Invoke,
+            TransformToEnum.Advanced => node => AzureToNode.nodeToString(
+                NodeSettingsState.KeyWrapperStart,
+                NodeSettingsState.KeyWrapperEnd,
+                NodeSettingsState.ValueWrapperStart,
+                NodeSettingsState.ValueWrapperEnd,               
+                NodeSettingsState.NodeWrapperStart,
+                NodeSettingsState.NodeWrapperEnd,
+                NodeSettingsState.ConcatString,
+                node
+                ),
             _ => throw new ArgumentOutOfRangeException(nameof(outputs), outputs, "Output not supported")};
     }
 

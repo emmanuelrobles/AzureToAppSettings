@@ -73,3 +73,30 @@ a, .btn-link {
 .json-container textarea{
     max-width: 650px;
 }
+
+.advanced-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.advanced-container .advanced-headers{
+    padding-bottom: 15px;
+}
+
+.advanced-container .advanced-legend{
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 15px;
+}
+
+
+.advanced-container .advanced-option-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.advanced-container .advanced-option-container .advanced-option{
+    display: flex;
+    flex-direction: column;
+    padding-right: 25px;
+}
