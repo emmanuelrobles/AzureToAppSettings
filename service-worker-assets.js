@@ -1,7 +1,7 @@
 ﻿self.assetsManifest = {
   "assets": [
     {
-      "hash": "sha256-\/GvT+lCPj9895n4AJOjOTuCmLndNBh+ayAAFPhd5GQc=",
+      "hash": "sha256-FHNz8ke1rItq\/2lKMCTNGR45bWSnlQDPFSHzDxDW3Ug=",
       "url": "css\/app.css"
     },
     {
@@ -181,7 +181,7 @@
       "url": "_framework\/Azure-to-Node.dll"
     },
     {
-      "hash": "sha256-Ya00QH\/l\/aNbXwQW6fFdSUGqrr9YmR7UX6tKoVlA8lg=",
+      "hash": "sha256-wW3dUWTTlRIN85+xmp3tRM8XDLs1vpeONV66AfoymW8=",
       "url": "_framework\/WebUI.dll"
     },
     {
@@ -389,7 +389,7 @@
       "url": "_framework\/zh-Hant\/FSharp.Core.resources.dll"
     },
     {
-      "hash": "sha256-oqv5era2cwGYIfo38g1jdAtlgO1HCGpNDOlQWycV6nA=",
+      "hash": "sha256-QjBOH24jf+E7GTQ5wt7WKndohwWoFzkGydhdSVMqycQ=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -397,5 +397,5 @@
       "url": "_framework\/blazor.webassembly.js"
     }
   ],
-  "version": "CUjSuYV6"
+  "version": "u+MeyfG9"
 };
