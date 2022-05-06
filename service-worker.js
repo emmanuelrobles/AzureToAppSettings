@@ -1,1 +1,1 @@
-self.addEventListener('fetch',() => {})/* Manifest version: GzvwRaYa */
+self.addEventListener('fetch',() => {})/* Manifest version: CUjSuYV6 */
